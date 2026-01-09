@@ -1,0 +1,35 @@
+{
+  "name": "html2pdf",
+  "version": "1.0.0",
+  "description": "html to pdf with wkhtmltopdf",
+  "license": "ISC",
+  "author": "AlbanezFelipe",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "production": "NODE_ENV=production node app.js",
+    "swagger": "node swagger.js",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5",
+    "nodemon": "^3.1.11",
+    "sinon": "^21.0.1",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

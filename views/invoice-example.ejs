@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Fatura <%= number %></title>
+  <style>
+    /* Basic reset */
+    html, body { margin: 0; padding: 0; font-family: "Noto Sans", Arial, sans-serif; color: #222; }
+    @page { size: A4; margin: 20mm 15mm 20mm 15mm; }
+
+    h1 { font-size: 20px; margin: 0 0 8px; color: #2f74c0; }
+    .row { width: 100%; }
+    .col-6 { display: inline-block; width: 49%; vertical-align: top; }
+    .meta { font-size: 12px; margin: 6px 0 12px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; }
+    tfoot td { border-top: 2px solid #333; font-weight: bold; }
+
+    .small { font-size: 11px; color: #666; }
+    .page-break { page-break-before: always; }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <div class="col-6">
+      <h1>Fatura #<%= number %></h1>
+      <div class="meta">Data: <%= date %></div>
+      <div class="small">Cliente: <%= customer?.name %> | CNPJ: <%= customer?.cnpj %></div>
+      <div class="small">Endereço: <%= customer?.address %></div>
+    </div>
+    <div class="col-6" style="text-align:right;">
+      <div class="small">Emitido por: <%= company?.name %></div>
+      <div class="small">Endereço: <%= company?.address %></div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Qtd</th><th>Preço</th><th>Total</th></tr>
+    </thead>
+    <tbody>
+      <% (items || []).forEach(item => { %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.qty %></td>
+          <td>R$ <%= Number(item.price).toFixed(2) %></td>
+          <td>R$ <%= Number(item.price * item.qty).toFixed(2) %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" style="text-align:right;">Subtotal</td>
+        <td>R$ <%= Number(subtotal).toFixed(2) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align:right;">Impostos</td>
+        <td>R$ <%= Number(taxes).toFixed(2) %></td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align:right;">Total</td>
+        <td>R$ <%= Number(total).toFixed(2) %></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="page-break"></div>
+  <div class="small">Termos e Condições: ...</div>
+</body>
+</html>
