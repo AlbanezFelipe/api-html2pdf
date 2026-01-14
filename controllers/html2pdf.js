@@ -6,9 +6,14 @@ const crypto = require('crypto')
 const ejs = require("ejs")
 const { log, logError } = require('../commons/log')
 
-const TEMPLATES_DIR = path.join(process.cwd(), 'views');
-const PDF_TIMEOUT_MS = parseInt(process.env.PDF_TIMEOUT_MS || '30000', 10);
+// Wkhtmltopdf Path
+const wkhtmltopdfPath = os.platform() === 'win32' ? 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe' : 'wkhtmltopdf'
 
+// Templates Path
+const TEMPLATES_DIR = path.join(process.cwd(), 'views')
+const PDF_TIMEOUT_MS = parseInt(process.env.PDF_TIMEOUT_MS || '30000', 10)
+
+// EJS to HTML
 const renderEjsToFile = async (templateName, data) => {
   const html = await ejs.renderFile(path.join(TEMPLATES_DIR, `${templateName}.ejs`), data, {
     cache: true,
@@ -21,6 +26,7 @@ const renderEjsToFile = async (templateName, data) => {
   return tmpPath;
 }
 
+// Args to Wkhtmltopdf
 const buildWkhtmlArgs = ({ pageSize = 'A4', margin, dpi = 300 }) => {
   const args = [
     '--quiet',
@@ -37,109 +43,120 @@ const buildWkhtmlArgs = ({ pageSize = 'A4', margin, dpi = 300 }) => {
     bottom: margin?.bottom ?? '20mm',
     left: margin?.left ?? '15mm',
   };
+
   args.push('--margin-top', m.top, '--margin-right', m.right, '--margin-bottom', m.bottom, '--margin-left', m.left);
 
-  // Optional tweaks you might enable based on layout needs
   // args.push('--disable-smart-shrinking');
   // args.push('--zoom', '1.0');
 
   return args;
 }
 
-const htmlFileToPdfBuffer = async (inputHtmlPath, wkArgs) => {
+// HTML to PDF with Wkhtmltopdf
+const htmlFileToPdfBuffer = (inputHtmlPath, wkArgs) => {
   return new Promise((resolve, reject) => {
-    const child = spawn('wkhtmltopdf', [...wkArgs, inputHtmlPath, '-'], { stdio: ['ignore', 'pipe', 'pipe'] });
+    // Spawn process
+    const child = spawn(wkhtmltopdfPath, [...wkArgs, inputHtmlPath, '-'], { stdio: ['ignore', 'pipe', 'pipe'] });
 
+    // Storage for Output Data
     const chunks = [];
     let stderr = '';
 
-    const killTimer = setTimeout(() => {
-      child.kill('SIGKILL');
-    }, PDF_TIMEOUT_MS);
+    // Kill Process if timeout threshold exceed
+    const killTimer = setTimeout(() => { child.kill('SIGKILL'); }, PDF_TIMEOUT_MS);
 
-    child.stdout.on('data', (d) => { 
-        chunks.push(d)
-        log("chunk called")
-    });
+    // Push chunk data
+    child.stdout.on('data', (d) => { chunks.push(d); });
+
+    // Push error data
     child.stderr.on('data', (d) => { stderr += d.toString(); });
 
-    child.on('close', (code) => {
+    // On Process Close
+    child.on('close', code => {
+      // Clear Timeout Event
       clearTimeout(killTimer);
-      if (code !== 0) {
-        reject(new Error(`wkhtmltopdf exited ${code}: ${stderr.trim() || 'unknown error'}`));
-      } else {
-        log("finish", chunks)
-        resolve(Buffer.concat(chunks));
-      }
+
+      // Process closed with error
+      if (code !== 0) return reject(new Error(`wkhtmltopdf exited ${code}: ${stderr.trim() || 'unknown error'}`));
+
+      // Process successfully closed
+      resolve(Buffer.concat(chunks));
     });
 
-    child.on('error', (err) => {
-      clearTimeout(killTimer);
-      reject(err);
-    });
-  });
+    // On Process Error
+    child.on('error', err => {
+      // Clear Timeout Event
+      clearTimeout(killTimer)
+
+      // Reject with error
+      reject(err)
+    })
+  })
 }
 
 /**
- * POST /pdf
- * Body:
+ * Request:
  * {
- *   "template": "invoice",
- *   "data": { ... },
- *   "options": {
+ *   "template": "invoice", // template file
+ *   "data": { ... }, // data for template
+ *   "options": { // optional
  *     "pageSize": "A4",
  *     "dpi": 300,
  *     "margin": { "top": "20mm", "right": "15mm", "bottom": "20mm", "left": "15mm" }
- *   },
- *   "headerTemplate": "header", // optional
- *   "footerTemplate": "footer"  // optional
+ *     "response": json, raw, pdf
+ *   }
  * }
  */
 exports.build = async (req, res, next) => {
+  // Read request body
   const { template, data = {}, options = {} } = req.body || {};
+
+  // Missing template
   if (!template) return res.status(400).json({ error: 'Missing "template" in body' });
 
   // Enforce template existence to avoid arbitrary file reads
   const mainPath = path.join(TEMPLATES_DIR, `${template}.ejs`);
-  log(mainPath)
+
+  // Verify if template exist
   try {
     await fs.access(mainPath);
   } catch {
     return res.status(404).json({ error: `Template "${template}" not found` });
   }
 
-  try {
-    const pdfBuffer = await (async () => {
-      // Render main HTML
-      const inputHtmlPath = await renderEjsToFile(template, data);
+  // Render template to HTML
+  const inputHtmlPath = await renderEjsToFile(template, data);
 
-      const wkArgs = buildWkhtmlArgs({
-        pageSize: options.pageSize,
-        margin: options.margin,
-        dpi: options.dpi
-      });
+  // Build args for Wkhtmltopdf
+  const wkArgs = buildWkhtmlArgs({
+    pageSize: options.pageSize,
+    margin: options.margin,
+    dpi: options.dpi
+  });
 
-      try {
-        const pdf = await htmlFileToPdfBuffer(inputHtmlPath, wkArgs);
-        return { pdf, tmpPaths: [inputHtmlPath].filter(Boolean) };
-      } catch (err) {
-        throw err;
-      } finally {
-        // Cleanup temp files
-        const toDelete = [inputHtmlPath].filter(Boolean);
-        await Promise.allSettled(toDelete.map((p) => fs.unlink(p)));
-      }
-    })();
+  // HTML to PDF
+  const pdf = await htmlFileToPdfBuffer(inputHtmlPath, wkArgs);
+  
+  // Clear temp HTML file
+  const toDelete = [inputHtmlPath].filter(Boolean);
+  await Promise.allSettled(toDelete.map((p) => fs.unlink(p)));
 
-    //log(pdfBuffer.pdf)
-
-    // res.setHeader('Content-Type', 'application/pdf');
-    // res.setHeader('Content-Disposition', 'inline; filename="document.pdf"');
-    log(pdfBuffer.pdf.toString('base64'))
-    res.send(pdfBuffer.pdf.toString('base64'))
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err?.message || 'PDF generation failed' });
+  // Response as Base64 as text
+  if(options.response === 'raw') {
+    res.setHeader('Content-Type', 'application/text')
+    return res.send(pdf)
   }
+
+  // Response as File
+  if (options.response === 'pdf') {
+    res.setHeader('Content-Length', pdf.length)
+    res.setHeader('Content-Type', 'application/pdf')
+    res.setHeader('Content-Disposition', `attachment; filename=${template}.pdf`)
+    return res.send(pdf)
+  }
+
+  // Response as Base64 in JSON
+  return res.json({
+    base64: pdf.toString('base64')
+  })
 };
