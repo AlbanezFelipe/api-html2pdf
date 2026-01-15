@@ -1,33 +1,53 @@
-# Dockerfile
-FROM node:20-slim
+FROM node:20-bullseye-slim
 
-# Install wkhtmltopdf and fonts
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-      wkhtmltopdf \
-      fonts-noto \
-      fonts-noto-cjk \
-      fonts-noto-color-emoji && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# Avoid tzdata prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Non-root for better security (optional)
-RUN useradd -m appuser
+# Install wkhtmltopdf runtime deps + fonts
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    fontconfig \
+    libfreetype6 \
+    libjpeg62-turbo \
+    libpng16-16 \
+    libx11-6 \
+    libxcb1 \
+    libxext6 \
+    libxrender1 \
+    xfonts-75dpi \
+    xfonts-base \
+    fonts-dejavu \
+    fonts-liberation \
+    fonts-noto \
+    # fonts-noto-cjk \
+    # fonts-noto-color-emoji \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install patched wkhtmltopdf
+ADD https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb /tmp/wkhtml.deb
+RUN dpkg -i /tmp/wkhtml.deb && rm /tmp/wkhtml.deb
+
+# Optional sanity check (fail fast if broken)
+RUN wkhtmltopdf --version | grep -q "patched qt"
+
+# App directory
 WORKDIR /app
 
-# Install deps
-COPY package.json ./
-RUN npm ci --omit=dev
+# Enviroment
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 
-# Copy source & templates
-COPY src ./src
-COPY templates ./templates
+# Install dependencies
+COPY package*.json ./
 
-# Runtime env
-ENV PORT=3000 \
-    MAX_CONCURRENCY=4 \
-    PDF_TIMEOUT_MS=30000
+# Npm install
+RUN if [ "$NODE_ENV" = "production" ]; then npm ci --omit=dev; else npm install; fi
 
-EXPOSE 3000
-USER appuser
+# Copy source
+COPY . .
 
-CMD ["node", "src/server.js"]
+# Expose API port
+EXPOSE 8000
+
+# Run app
+CMD ["npm", "start"]
