@@ -5,6 +5,8 @@ const { spawn } = require('node:child_process')
 const crypto = require('crypto')
 const ejs = require("ejs")
 const { log, logError } = require('../commons/log')
+const utils = require('../commons/utils')
+const { logDev } = require('../commons/log')
 
 // Wkhtmltopdf Path
 const wkhtmltopdfPath = os.platform() === 'win32' ? 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe' : 'wkhtmltopdf'
@@ -15,7 +17,7 @@ const PDF_TIMEOUT_MS = parseInt(process.env.PDF_TIMEOUT_MS || '30000', 10)
 
 // EJS to HTML
 const renderEjsToFile = async (templateName, data) => {
-  const html = await ejs.renderFile(path.join(TEMPLATES_DIR, `${templateName}.ejs`), data, {
+  const html = await ejs.renderFile(path.join(TEMPLATES_DIR, `${templateName}.ejs`), { ...data, utils}, {
     cache: true,
     rmWhitespace: false,
     // Helps EJS resolve relative includes within templates
@@ -94,22 +96,11 @@ const htmlFileToPdfBuffer = (inputHtmlPath, wkArgs) => {
   })
 }
 
-/**
- * Request:
- * {
- *   "template": "invoice", // template file
- *   "data": { ... }, // data for template
- *   "options": { // optional
- *     "pageSize": "A4",
- *     "dpi": 300,
- *     "margin": { "top": "20mm", "right": "15mm", "bottom": "20mm", "left": "15mm" }
- *     "response": json, raw, pdf
- *   }
- * }
- */
 exports.build = async (req, res, next) => {
   // Read request body
   const { template, data = {}, options = {} } = req.body || {};
+
+  logDev(data)
 
   // Missing template
   if (!template) return res.status(400).json({ error: 'Missing "template" in body' });
@@ -144,7 +135,7 @@ exports.build = async (req, res, next) => {
   // Response as Base64 as text
   if(options.response === 'raw') {
     res.setHeader('Content-Type', 'application/text')
-    return res.send(pdf)
+    return res.send(pdf.toString('base64'))
   }
 
   // Response as File

@@ -15,8 +15,13 @@ const logError = (...args) => console.error(
     ...args
 )
 
+const logWarning = (...args) => console.error(
+    color('[WARNING]', 'yellow', 'bold') + nowPretty(),
+    ...args
+)
+
 const logDev = (...args) => {
     if(process.env.NODE_ENV !== 'production') log(...args)
 }
 
-module.exports = { log, logError, logDev }
+module.exports = { log, logError, logWarning, logDev }
