@@ -5,7 +5,12 @@ services:
       dockerfile: Dockerfile
       args:
         NODE_ENV: development
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: npm start
+    # volumes:
+    #  - .:/app
+    #  - /app/node_modules
+    image: html2pdf:dev
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    # command: npm start
