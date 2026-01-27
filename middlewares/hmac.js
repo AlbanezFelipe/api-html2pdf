@@ -16,7 +16,7 @@ const compare = (a, b) => {
 }
 
 module.exports = (req, res, next) => {
-    const serverHmacHex = crypto.createHmac('sha256', secretKey).update(Buffer.from(JSON.stringify(req.body || ''), 'utf8')).digest('hex')
+    const serverHmacHex = crypto.createHmac('sha256', secretKey).update(req.bodyBuf || Buffer.from([])).digest('hex') // req.bodyBuf from body-parser.verify middleware
     const clientHmacHex = req.get('Authorization') || ''
 
     if(compare(serverHmacHex, clientHmacHex)) {

@@ -28,6 +28,9 @@
           "400": {
             "description": "Bad Request"
           },
+          "403": {
+            "description": "Forbidden"
+          },
           "404": {
             "description": "Not Found"
           }
@@ -105,15 +108,31 @@
         }
       }
     },
-    "/rabrune-test": {
+    "/rabrune-faturamento": {
       "get": {
         "tags": [
-          "Tests"
+          "Preview Tests"
         ],
         "description": "",
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/hmac": {
+      "get": {
+        "tags": [
+          "HMAC Tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         }
       }

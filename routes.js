@@ -15,7 +15,7 @@ module.exports = router => {
     // ----------------------------------------------------------------------------------
     // Html to Pdf Service
     // ----------------------------------------------------------------------------------
-    router.post('/', html2pdf.build /*
+    router.post('/', hmac, html2pdf.build /*
         #swagger.tags = ['HTML to PDF']
         #swagger.summary = 'Generate a PDF from HTML'
         #swagger.requestBody = {

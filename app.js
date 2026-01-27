@@ -33,7 +33,7 @@ const { log } = require('./commons/log.js')
 // ---------------------------------------------------------------------------------
 // Middlewares
 // ---------------------------------------------------------------------------------
-app.use(require('body-parser').json({ limit: '10mb' }))
+app.use(require('body-parser').json({ limit: '10mb', verify: (req, res, buf) => { req.bodyBuf = buf } })) // buf for hmac
 app.use(require('helmet')())
 app.use(require('cors')())
 app.use(require('compression')())

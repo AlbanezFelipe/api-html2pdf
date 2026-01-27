@@ -30,6 +30,8 @@ const capitalize = s => (s || '') && (s.charAt(0).toUpperCase() + s.slice(1))
 
 const trim = s => (s || '').trim()
 
+const lastSplit = (s, split = '/') => (s || '').split('/').filter(Boolean).pop()
+
 // ----------------------------------------------------------------------------
 // Time Functions
 // ----------------------------------------------------------------------------
@@ -100,5 +102,5 @@ const moneyFormat = (amount, currency = 'BRL', locale = 'pt-BR') => {
 // Export
 // ----------------------------------------------------------------------------
 module.exports = {
-    filterFields, range, allTrue, toNum, capitalize, trim, minutesFormat, timeSince, datetimeFormat, datetimeFormatBR, dateFormatBR, moneyFormat
+    filterFields, range, allTrue, toNum, capitalize, trim, lastSplit, minutesFormat, timeSince, datetimeFormat, datetimeFormatBR, dateFormatBR, moneyFormat
 }
