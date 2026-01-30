@@ -167,3 +167,103 @@ exports.rabruneFaturamento = async (req, res, next) => {
     }
   }))
 }
+
+exports.headerTest = async (req, res, next) => {
+  res.send(await renderEjs('promatec/partials/header', {}))
+}
+
+exports.footerTest = async (req, res, next) => {
+  res.send(await renderEjs('promatec/partials/footer', {}))
+}
+
+exports.promatecFinanceiro = async (req, res, next) => {
+  res.send(await renderEjs('promatec/contas-pagar', {
+    "items": [
+        {
+            "status": "Pago",
+            "vencimento": "15/01/2025",
+            "parcelas": "1/1",
+            "valor_parcela": "R$ 285,00",
+            "valor_total": "R$ 285,00"
+        },
+        {
+            "status": "Pago",
+            "vencimento": "18/01/2025",
+            "parcelas": "1/1",
+            "valor_parcela": "R$ 150,00",
+            "valor_total": "R$ 150,00"
+        },
+        {
+            "status": "Pago",
+            "vencimento": "22/01/2025",
+            "parcelas": "2/3",
+            "valor_parcela": "R$ 125,00",
+            "valor_total": "R$ 375,00"
+        },
+        {
+            "status": "Atrasado",
+            "vencimento": "28/01/2025",
+            "parcelas": "1/2",
+            "valor_parcela": "R$ 320,00",
+            "valor_total": "R$ 640,00"
+        },
+        {
+            "status": "Em aberto",
+            "vencimento": "05/02/2025",
+            "parcelas": "1/1",
+            "valor_parcela": "R$ 395,00",
+            "valor_total": "R$ 395,00"
+            },
+        {
+            "status": "Em aberto",
+            "vencimento": "12/02/2025",
+            "parcelas": "3/4",
+            "valor_parcela": "R$ 89,00",
+            "valor_total": "R$ 356,00"
+        },
+        {
+            "status": "Em aberto",
+            "vencimento": "15/02/2025",
+            "parcelas": "1/2",
+            "valor_parcela": "R$ 210,00",
+            "valor_total": "R$ 420,00"
+        },
+        {
+            "status": "Em aberto",
+            "vencimento": "18/02/2025",
+            "parcelas": "1/1",
+            "valor_parcela": "R$ 175,00",
+            "valor_total": "R$ 175,00"
+        },
+        {
+            "status": "Em aberto",
+            "vencimento": "22/02/2025",
+            "parcelas": "2/5",
+            "valor_parcela": "R$ 95,00",
+            "valor_total": "R$ 475,00"
+        },
+        {
+            "status": "Pago",
+            "vencimento": "08/01/2025",
+            "parcelas": "1/1",
+            "valor_parcela": "R$ 340,00",
+            "valor_total": "R$ 340,00"
+        },
+        {
+            "status": "Em aberto",
+            "vencimento": "25/02/2025",
+            "parcelas": "1/3",
+            "valor_parcela": "R$ 180,00",
+            "valor_total": "R$ 540,00"
+        },
+        {
+            "status": "Atrasado",
+            "vencimento": "30/01/2025",
+            "parcelas": "2/2",
+            "valor_parcela": "R$ 265,00",
+            "valor_total": "R$ 530,00"
+        }
+    ],
+    "total_valor_parcelas": "R$ 2.629,00"
+  }))
+}

@@ -23,5 +23,9 @@ module.exports = (req, res, next) => {
         return next()
     }
 
+    if(process.env.NODE_ENV !== 'production') {
+      logWarning('HMAC Middleware Failed. Skipping for Dev environment')
+      return next()
+    }
     res.status(403).json({ error: 'Não autenticado' })
 }

@@ -1,0 +1,42 @@
+{
+    "template": "promatec/vendas",
+    "data": { 
+        "items": [
+            {
+              "funcionario": "Carlos Alberto Silva",
+              "percentual_total": "25.3%",
+              "valor_vendido": "R$ 3.240,00"
+            },
+            {
+              "funcionario": "Mariana Ferreira Costa",
+              "percentual_total": "22.6%",
+              "valor_vendido": "R$ 2.890,00"
+            },
+            {
+              "funcionario": "Roberto Oliveira Santos",
+              "percentual_total": "20.0%",
+              "valor_vendido": "R$ 2.565,00"
+            },
+            {
+              "funcionario": "Ana Paula Rodrigues",
+              "percentual_total": "17.0%",
+              "valor_vendido": "R$ 2.180,00"
+            },
+            {
+              "funcionario": "Pedro Henrique Alves",
+              "percentual_total": "15.0%",
+              "valor_vendido": "R$ 1.925,00"
+            }
+        ],
+        "percentual_total": "100.0%",
+        "valor_vendido": "R$ 12.800,00"
+    },
+    "options": {
+        "pageSize": "A4",
+        "dpi": 300,
+        "margin": { "top": "30mm", "right": "15mm", "bottom": "15mm", "left": "15mm" },
+        "response": "pdf",
+        "header": true,
+        "footer": true
+    }
+}

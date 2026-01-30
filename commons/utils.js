@@ -3,6 +3,7 @@
 // ----------------------------------------------------------------------------
 
 const filterFields = (obj, fields) => fields.reduce((o, f) => f in obj ? { ...o, [f]: obj[f] } : o, {})
+const has = v => typeof v !== 'undefined' && v
 
 // ----------------------------------------------------------------------------
 // Array Functions
@@ -26,10 +27,11 @@ const toNum = v => {
 // String Functions
 // ----------------------------------------------------------------------------
 
-const capitalize = s => (s || '') && (s.charAt(0).toUpperCase() + s.slice(1))
+const capitalize = s => 'test' && (s || '') && (s.charAt(0).toUpperCase() + s.toLowerCase().slice(1))
 
 const trim = s => (s || '').trim()
 
+const firstSplit = (s, split = '/') => (s || '').split('/').filter(Boolean).shift()
 const lastSplit = (s, split = '/') => (s || '').split('/').filter(Boolean).pop()
 
 // ----------------------------------------------------------------------------
@@ -74,9 +76,9 @@ const datetimeFormat = (date) => new Date(new Date(date) - new Date().getTimezon
   .replace(/-/g, '/').replace('T', ' - ')
   .replace('Z', '').slice(0, -4)
 
-const datetimeFormatBR = (date) => (new Date(date)).toLocaleString()
+const datetimeFormatBR = (date) => (new Date(date)).toLocaleString('pt-BR', { timeZone: 'UTC' })
 
-const dateFormatBR = (date) => (new Date(date)).toLocaleDateString()
+const dateFormatBR = (date) => (new Date(date)).toLocaleDateString('pt-BR', { timeZone: 'UTC' })
 
 const moneyFormat = (amount, currency = 'BRL', locale = 'pt-BR') => {
     
@@ -102,5 +104,5 @@ const moneyFormat = (amount, currency = 'BRL', locale = 'pt-BR') => {
 // Export
 // ----------------------------------------------------------------------------
 module.exports = {
-    filterFields, range, allTrue, toNum, capitalize, trim, lastSplit, minutesFormat, timeSince, datetimeFormat, datetimeFormatBR, dateFormatBR, moneyFormat
+    filterFields, has, range, allTrue, toNum, capitalize, trim, firstSplit, lastSplit, minutesFormat, timeSince, datetimeFormat, datetimeFormatBR, dateFormatBR, moneyFormat
 }

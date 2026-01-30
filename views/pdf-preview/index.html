@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.43.6/src-min-noconflict/ace.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/ace-builds@1.43.6/css/ace.min.css" rel="stylesheet">
+
+        <script>
+            async function loadPDF() {
+                loading.innerHTML = 'Loading . . .';
+                viewer.style.cursor = 'progress';
+                try {
+                    const data = editor.getValue();
+                    localStorage.setItem('data', data);
+                    const res = await fetch('/', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/pdf',
+                            'Content-Type': 'application/json'
+                        },
+                        body: data
+                    });
+
+                    if (!res.ok) throw new Error('[' + res.status + ']: ' + (await res.json())?.['error']);
+
+                    loading.innerHTML = 'Loaded';
+                    viewer.style.cursor = 'auto';
+
+                    const blob = await res.blob();
+                    const url = URL.createObjectURL(blob);
+
+                    const container = viewer;
+                    container.innerHTML = '';
+                    const iframe = document.createElement('iframe');
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.src = url;
+                    container.appendChild(iframe);
+                } catch (e) {
+                    console.error(e);
+                    loading.innerHTML = 'Error';
+                    viewer.style.cursor = 'auto';
+                    alert(e);
+                }
+            }
+
+            window.onload = function() {
+                editor = ace.edit("editor");
+                editor.setTheme("ace/theme/cloud9_day");
+                editor.session.setMode("ace/mode/json");
+                editor.setValue(localStorage.getItem('data') || JSON.stringify({ "template": "project/template", "data": {}, "options" :{ "pageSize": "A4", "dpi": 300, "margin": {"top": "30mm", "right": "15mm", "bottom": "15mm", "left": "15mm"}, "response":"pdf", "header": true, "footer": true }}, null, 4));
+
+                loading = document.getElementById('loading');
+                viewer = document.getElementById('viewer');
+
+                document.getElementById('resizable').onmousedown = e => {
+                    const editorhtml = document.getElementById('editor');
+
+                    const right = editorhtml.getBoundingClientRect().right;
+
+                    document.onmousemove = e => {
+                        editorhtml.style.width = Math.max(right - e.clientX, 75) + "px";
+                    };
+
+                    document.onmouseup = () => {
+                        document.onmousemove = document.onmouseup = null;
+                    };
+                };
+
+                document.getElementById('loadBtn').addEventListener('click', loadPDF);
+            }
+        </script>
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                font-family: monospace;
+                background-color: #333;
+            }
+            #resizable {
+                cursor: ew-resize;
+                width: 18px; 
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                background-color: #DADADA;
+                border-right: 1px solid #999;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            #loadBtn {
+                cursor: pointer;
+                border: none;
+                border-bottom: 1px solid #999;
+                padding: 4px 0;
+                font-family: monospace;
+                transition: 0.2s;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            #loadBtn:hover {
+                background-color: #CCC;
+            }
+            #loading {
+                display: inline; 
+                background-color: white; 
+                text-align: center; 
+                padding: 2px 0px;
+                border-top: 1px solid #999;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="viewer" style="height: 100vh; width: 100%"></div>
+        <div style="display: flex; flex-direction: row; position: fixed; top: 7.5vh; right: 24px; border: 1px solid #999;">
+            <div id="resizable">
+                <span>::</span>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <button id="loadBtn">Load PDF</button>
+                <div id="editor" style="width: 400px; min-height: 400px; height: 80vh;">{}</div>
+                <div id="loading";>Status</div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -16,20 +16,21 @@ const TEMPLATES_DIR = path.join(process.cwd(), 'views')
 const PDF_TIMEOUT_MS = parseInt(process.env.PDF_TIMEOUT_MS || '60000', 10)
 
 // EJS to HTML
-const renderEjsToFile = async (templateSubpath, data) => {
-  const html = await ejs.renderFile(path.join(TEMPLATES_DIR, `${templateSubpath}.ejs`), { ...data, utils}, {
+const renderEjsToFile = async (templatePath, data) => {
+  const html = await ejs.renderFile(templatePath, { ...data, utils}, {
     cache: true,
+    strict: false,
     rmWhitespace: false,
-    // Helps EJS resolve relative includes within templates
-    filename: path.join(TEMPLATES_DIR, `${templateSubpath}.ejs`)
+    filename: templatePath,
+    localsName: 'data'
   })
-  const tmpPath = path.join(os.tmpdir(), `html2pdf-${utils.lastSplit(templateSubpath)}-${crypto.randomUUID()}.html`)
+  const tmpPath = path.join(os.tmpdir(), `html2pdf-${crypto.randomUUID()}.html`)
   await fs.writeFile(tmpPath, html, 'utf-8')
   return tmpPath
 }
 
 // Args to Wkhtmltopdf
-const buildWkhtmlArgs = ({ pageSize = 'A4', margin, dpi = 300 }) => {
+const buildWkhtmlArgs = ({ pageSize = 'A4', margin, dpi = 300, headerHtmlPath, footerHtmlPath }) => {
   const args = [
     '--quiet',
     '--encoding', 'utf-8',
@@ -47,6 +48,9 @@ const buildWkhtmlArgs = ({ pageSize = 'A4', margin, dpi = 300 }) => {
   };
 
   args.push('--margin-top', m.top, '--margin-right', m.right, '--margin-bottom', m.bottom, '--margin-left', m.left)
+  
+  if (headerHtmlPath) args.push('--header-html', headerHtmlPath)
+  if (footerHtmlPath) args.push('--footer-html', footerHtmlPath)
 
   // args.push('--disable-smart-shrinking')
   // args.push('--zoom', '1.0')
@@ -108,37 +112,47 @@ exports.build = async (req, res, next) => {
   if (!templateBody) return res.status(400).json({ error: 'Missing "template" in body' })
 
   // Template Sanitize
-  const template = templateBody.replace(/[^a-zA-Z0-9/]/g, '')
+  const template = templateBody.replace(/[^a-zA-Z0-9/-]/g, '')
 
   // Enforce template existence to avoid arbitrary file reads
   const mainPath = path.join(TEMPLATES_DIR, `${template}.ejs`)
 
-  // Verify if template exist
+  const headerPath = options.header && path.join(TEMPLATES_DIR, `${utils.firstSplit(template)}/partials/header.ejs`)
+  const footerPath = options.header && path.join(TEMPLATES_DIR, `${utils.firstSplit(template)}/partials/footer.ejs`)
+
+  // Verify if templates exists
   try {
     await fs.access(mainPath)
+    if (headerPath) await fs.access(headerPath)
+    if (footerPath) await fs.access(footerPath)
   } catch {
-    return res.status(404).json({ error: `Template "${template}" not found` })
+    return res.status(404).json({ error: `Template "${template}" or partials header and footer not found` })
   }
 
   // Render template to HTML
-  const inputHtmlPath = await renderEjsToFile(template, data)
+  const mainHtmlPath = await renderEjsToFile(mainPath, data)
+  const headerHtmlPath = headerPath && (await renderEjsToFile(headerPath, data))
+  const footerHtmlPath = footerPath && (await renderEjsToFile(footerPath, data))
 
   // Build args for Wkhtmltopdf
   const wkArgs = buildWkhtmlArgs({
     pageSize: options.pageSize,
     margin: options.margin,
-    dpi: options.dpi
-  });
+    dpi: options.dpi,
+    headerHtmlPath,
+    footerHtmlPath
+  })
 
   // HTML to PDF
-  const pdf = await htmlFileToPdfBuffer(inputHtmlPath, wkArgs)
+  const pdf = await htmlFileToPdfBuffer(mainHtmlPath, wkArgs)
   
-  // Clear temp HTML file
-  const toDelete = [inputHtmlPath].filter(Boolean)
-  await Promise.allSettled(toDelete.map((p) => fs.unlink(p)))
+  // Clear temp HTML files
+  const toDelete = [mainHtmlPath, headerHtmlPath, footerHtmlPath].filter(Boolean)
+  //await Promise.allSettled(toDelete.map((p) => fs.unlink(p)))
+  console.log(toDelete)
 
   // Response as Base64 as text
-  if(options.response === 'raw') {
+  if(options.response === 'raw' || options.response === 'base64') {
     res.setHeader('Content-Type', 'application/text')
     return res.send(pdf.toString('base64'))
   }
@@ -147,7 +161,7 @@ exports.build = async (req, res, next) => {
   if (options.response === 'pdf') {
     res.setHeader('Content-Length', pdf.length)
     res.setHeader('Content-Type', 'application/pdf')
-    res.setHeader('Content-Disposition', `attachment; filename=${template}.pdf`)
+    res.setHeader('Content-Disposition', `attachment; filename=${utils.firstSplit(template)}.pdf`)
     return res.send(pdf)
   }
 

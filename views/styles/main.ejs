@@ -1,0 +1,77 @@
+<%- include('./fonts/roboto') %>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 13px;
+        color: #000;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .left { text-align: left; }
+    .right { text-align: right; }
+    .center { text-align: center; }
+
+    .light { font-weight: 300; }
+    .medium { font-weight: 500; }
+    .bold { font-weight: 700; }
+
+    .block { display: block; }
+    .inline-block { display: inline-block; }
+    .inline { display: inline; }
+
+    .w-min { width: 1%; }
+    .w-5 { width: 5%; }
+    .w-10 { width: 10%; }
+    .w-15 { width: 15%; }
+    .w-20 { width: 20%; }
+    .w-25 { width: 25%; }
+    .w-1p3 { width: 33.3333%; }
+    .w-50 { width: 50%; }
+    .w-75 { width: 75%; }
+    .w-100 { width: 100%; }
+
+    .black { color: #000000 }
+    .white { color: #FFFFFF }
+
+    .uppercase { text-transform: uppercase; }
+    .lowercase { text-transform: lowercase; }
+    .capitalize { text-transform: capitalize; }
+
+    .nowrap { white-space: nowrap; text-wrap: nowrap; }
+
+</style>
+
+<%
+  const sizes = { none:'0', xs:'4px', sm:'8px', md:'12px', lg:'16px', xl:'24px' };
+  let css = '';
+  for (const [k, v] of Object.entries(sizes)) {
+    css += `.m-${k}{margin:${v};}\n`;
+    css += `.p-${k}{padding:${v};}\n`;
+    css += `.m-x-${k}{margin-left:${v};margin-right:${v};}\n`;
+    css += `.m-y-${k}{margin-top:${v};margin-bottom:${v};}\n`;
+    css += `.p-x-${k}{padding-left:${v};padding-right:${v};}\n`;
+    css += `.p-y-${k}{padding-top:${v};padding-bottom:${v};}\n`;
+    css += `.p-t-${k}{padding-top:${v};}\n`;
+    css += `.p-r-${k}{padding-right:${v};}\n`;
+    css += `.p-b-${k}{padding-bottom:${v};}\n`;
+    css += `.p-l-${k}{padding-left:${v};}\n`;
+    css += `.m-t-${k}{margin-top:${v};}\n`;
+    css += `.m-r-${k}{margin-right:${v};}\n`;
+    css += `.m-b-${k}{margin-bottom:${v};}\n`;
+    css += `.m-l-${k}{margin-left:${v};}\n`;
+  }
+%>
+<style><%- css %></style>

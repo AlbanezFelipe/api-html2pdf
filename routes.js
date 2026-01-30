@@ -109,6 +109,22 @@ module.exports = router => {
         router.get('/rabrune-faturamento', ejsTest.rabruneFaturamento 
             /* #swagger.tags = ['Preview Tests'] */
         )
+        
+        router.get('/header-test', ejsTest.headerTest 
+            /* #swagger.tags = ['Preview Tests'] */
+        )
+
+        router.get('/footer-test', ejsTest.footerTest 
+            /* #swagger.tags = ['Preview Tests'] */
+        )
+
+        router.get('/promatec-financeiro', ejsTest.promatecFinanceiro
+            /* #swagger.tags = ['Preview Tests'] */
+        )
+
+        router.get('/pdf-preview', /* #swagger.tags = ['Preview Tests'] */ (req, res) => {
+            res.sendFile(require('path').join(__dirname, '/views/pdf-preview/index.html'));
+        })
 
         // ------------------------------------------------------------------------------
         // HMAC validation Test

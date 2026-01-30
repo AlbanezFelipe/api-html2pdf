@@ -1,0 +1,434 @@
+{
+  "template": "promatec/contas-pagar",
+  "data": {
+    "dateFrom": "01/01/2026 00:00:00",
+    "dateTo": "01/30/2026 00:00:00",
+    "header": {
+      "total": 11059.00,
+      "qntAberto": 26,
+      "qntAtrasada": 25,
+      "qntPaga": 0
+    },
+    "items": [
+      {
+        "codigo": 807394,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-05T00:00:00",
+        "Parcela": "1/3",
+        "valorParcela": 100.00,
+        "valorTotal": 300.0000
+      },
+      {
+        "codigo": 807394,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-02-05T00:00:00",
+        "Parcela": "2/3",
+        "valorParcela": 100.00,
+        "valorTotal": 300.0000
+      },
+      {
+        "codigo": 807394,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-03-05T00:00:00",
+        "Parcela": "3/3",
+        "valorParcela": 100.00,
+        "valorTotal": 300.0000
+      },
+      {
+        "codigo": 807397,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-07T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 22.00,
+        "valorTotal": 22.0000
+      },
+      {
+        "codigo": 807398,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-22T00:00:00",
+        "Parcela": "1/2",
+        "valorParcela": 11.00,
+        "valorTotal": 22.0000
+      },
+      {
+        "codigo": 807398,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-02-22T00:00:00",
+        "Parcela": "2/2",
+        "valorParcela": 11.00,
+        "valorTotal": 22.0000
+      },
+      {
+        "codigo": 807399,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-27T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 33.00,
+        "valorTotal": 33.0000
+      },
+      {
+        "codigo": 807400,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-21T00:00:00",
+        "Parcela": "1/2",
+        "valorParcela": 111.00,
+        "valorTotal": 222.0000
+      },
+      {
+        "codigo": 807400,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-02-21T00:00:00",
+        "Parcela": "2/2",
+        "valorParcela": 111.00,
+        "valorTotal": 222.0000
+      },
+      {
+        "codigo": 807401,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870553,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870554,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-16T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870555,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-17T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870556,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-18T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870557,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-19T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870558,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-20T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870559,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-21T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870560,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-22T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870561,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-23T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870562,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870563,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-22T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 50.00,
+        "valorTotal": 50.0000
+      },
+      {
+        "codigo": 870564,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-23T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 50.00,
+        "valorTotal": 50.0000
+      },
+      {
+        "codigo": 870565,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 50.00,
+        "valorTotal": 50.0000
+      },
+      {
+        "codigo": 870566,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-25T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 50.00,
+        "valorTotal": 50.0000
+      },
+      {
+        "codigo": 870567,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-26T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 50.00,
+        "valorTotal": 50.0000
+      },
+      {
+        "codigo": 870568,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-15T00:00:00",
+        "Parcela": "1/2",
+        "valorParcela": 16.50,
+        "valorTotal": 33.0000
+      },
+      {
+        "codigo": 870568,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-02-15T00:00:00",
+        "Parcela": "2/2",
+        "valorParcela": 16.50,
+        "valorTotal": 33.0000
+      },
+      {
+        "codigo": 870569,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870570,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-02-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870571,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-03-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870572,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-04-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870573,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-05-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870574,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-06-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870575,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-07-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870576,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-08-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870577,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-09-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870578,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-10-15T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 100.00,
+        "valorTotal": 100.0000
+      },
+      {
+        "codigo": 870579,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870580,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-02-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870581,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-03-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870582,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-04-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870583,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-05-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870584,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-06-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870585,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-07-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870586,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-08-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870587,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-09-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870588,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-10-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870589,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-11-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870590,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-12-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 500.00,
+        "valorTotal": 500.0000
+      },
+      {
+        "codigo": 870591,
+        "statusPedido": "VENCIDO",
+        "dataVencto": "2026-01-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 600.00,
+        "valorTotal": 600.0000
+      },
+      {
+        "codigo": 870592,
+        "statusPedido": "EM ABERTO",
+        "dataVencto": "2026-02-24T00:00:00",
+        "Parcela": "1/1",
+        "valorParcela": 600.00,
+        "valorTotal": 600.0000
+      }
+    ]
+  },
+  "options": {
+    "pageSize": "A4",
+    "dpi": 300,
+    "margin": {
+      "top": "30mm",
+      "right": "15mm",
+      "bottom": "15mm",
+      "left": "15mm"
+    },
+    "response": "pdf"
+  }
+}

@@ -1,0 +1,94 @@
+{
+    "template": "promatec/contas-receber",
+    "data": {
+		"items": [
+			{
+                "status": "Pago",
+                "cliente": "Cafeteria Aroma & Sabor",
+                "vencimento": "10/01/2025",
+                "valor": "R$ 385,00"
+			},
+			{
+                "status": "Pago",
+                "cliente": "Padaria Pão Quente",
+                "vencimento": "15/01/2025",
+                "valor": "R$ 220,00"
+			},
+			{
+                "status": "Pago",
+                "cliente": "Marketing Digital Plus",
+                "vencimento": "18/01/2025",
+                "valor": "R$ 165,00"
+			},
+			{
+                "status": "Atrasado",
+                "cliente": "Comércio Bom Preço",
+                "vencimento": "25/01/2025",
+                "valor": "R$ 290,00"
+			},
+			{
+                "status": "Atrasado",
+                "cliente": "Logística Rápida Transportes",
+                "vencimento": "28/01/2025",
+                "valor": "R$ 340,00"
+			},
+			{
+                "status": "Em aberto",
+                "cliente": "Café Expresso & Cia",
+                "vencimento": "05/02/2025",
+                "valor": "R$ 195,00"
+			},
+			{
+                "status": "Em aberto",
+                "cliente": "Agência Criativa Mídia",
+                "vencimento": "10/02/2025",
+                "valor": "R$ 275,00"
+			},
+			{
+                "status": "Em aberto",
+                "cliente": "Padaria e Confeitaria Doce Lar",
+                "vencimento": "15/02/2025",
+                "valor": "R$ 400,00"
+			},
+			{
+                "status": "Em aberto",
+                "cliente": "Mercadinho São José",
+                "vencimento": "20/02/2025",
+                "valor": "R$ 155,00"
+			},
+			{
+                "status": "Pago",
+                "cliente": "Transportadora Veloz Ltda",
+                "vencimento": "12/01/2025",
+                "valor": "R$ 310,00"
+			},
+			{
+                "status": "Em aberto",
+                "cliente": "Cafeteria Central",
+                "vencimento": "22/02/2025",
+                "valor": "R$ 240,00"
+			},
+			{
+                "status": "Em aberto",
+                "cliente": "Agência de Marketing Solutions",
+                "vencimento": "25/02/2025",
+                "valor": "R$ 125,00"
+			},
+			{
+                "status": "Atrasado",
+                "cliente": "Comércio e Variedades ABC",
+                "vencimento": "29/01/2025",
+                "valor": "R$ 180,00"
+			}
+		],
+		"total_geral": "R$ 3.280,00"
+	},
+    "options": {
+        "pageSize": "A4",
+        "dpi": 300,
+        "margin": { "top": "30mm", "right": "15mm", "bottom": "15mm", "left": "15mm" },
+        "response": "pdf",
+        "header": true,
+        "footer": true
+    }
+}
