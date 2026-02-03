@@ -29,23 +29,23 @@ const { log } = require('./commons/log.js')
 // Middlewares
 // ---------------------------------------------------------------------------------
 app.use(require('body-parser').json({ limit: '10mb', verify: (req, res, buf) => { req.bodyBuf = buf } })) // buf for hmac
-//app.use(require('helmet')((process.env.NODE_ENV === 'production' ? undefined : ({ contentSecurityPolicy: { directives: { "script-src": ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net"], "frame-src": ["'self'", "blob:"] } } }))))
+if (process.env.NODE_ENV === 'production') { app.use(require('helmet')()) } // disabled in dev for pdf-preview
 app.use(require('cors')())
 app.use(require('compression')())
 app.use(require('morgan')(`${color('[HTTP]', 'lightmagenta', 'bold')}${color('[:date[clf]]')}[${color(':remote-addr', 'yellow', 'bold')}] :method :url ${color(':status', 'blue', 'bold')} :total-time ms ":user-agent"`))
 app.use(require('express-rate-limit').rateLimit({ windowMs: 60000, limit: 100, message: { error: 'Too many requests, please try again later.' }, standardHeaders: true, legacyHeaders: false, validate: { trustProxy: false } })) // allowed 100 request per minute by ip
 
 // ---------------------------------------------------------------------------------
-// Public folder as static
+// Pdf Preview for Dev Environment
 // ---------------------------------------------------------------------------------
-// app.use('/public', express.static(require('path').join(__dirname, 'public')))
+// if (process.env.NODE_ENV !== 'production') { app.use('/pdf-preview', express.static(require('path').join(__dirname, 'pdf-preview'))) }
 
 // ---------------------------------------------------------------------------------
-// Swagger
+// Swagger for Dev Environment
 // ---------------------------------------------------------------------------------
 if (process.env.NODE_ENV !== 'production') {
     const swaggerUi = require('swagger-ui-express')
-    app.use('/docs', swaggerUi.serve, swaggerUi.setup(require('./swagger-output.json')))
+    app.use('/docs', swaggerUi.serve, swaggerUi.setup(require('./swagger/output.json')))
 }
 
 // ---------------------------------------------------------------------------------
@@ -64,3 +64,9 @@ app.use(require('./middlewares/error.js'))
 const server = app.listen(process.env.PORT || 8000, () => {
     log(color('HTTP Server listening on port'), server.address()?.port)
 })
+
+// ---------------------------------------------------------------------------------
+// Process env logs
+// ---------------------------------------------------------------------------------
+log(color('NODE_ENV:', 'green'), process.env.NODE_ENV === 'production' ? 'production' : 'dev')
+if (process.env.NODE_ENV !== 'production' && process.env.NODEMON_LEGACY === '1') log(color('Nodemon', 'green'), 'with ', color('--legacy-watch', 'yellow'))

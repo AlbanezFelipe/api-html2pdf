@@ -10,34 +10,36 @@
             <span class="bold" style="font-size: 16px;">CONTAS A RECEBER</span>
         </div>
         <div>
-            <table class="table-header">
-                <tr>
-                    <td>
-                        <div>
-                            <p class="text m-b-sm">Total do Período</p>
-                            <p class="text-value">R$ 2.500,00</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <p class="text m-b-sm">Em aberto</p>
-                            <p class="text-value">6</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <p class="text m-b-sm">Atrasadas</p>
-                            <p class="text-value">4</p>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <p class="text m-b-sm">Sem Boleto</p>
-                            <p class="text-value">2</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <% if (data.header) { %>
+                <table class="table-header">
+                    <tr>
+                        <td>
+                            <div>
+                                <p class="text m-b-sm">Total do Período</p>
+                                <p class="text-value"><%= utils.moneyFormat(header.total) %></p>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p class="text m-b-sm">Em aberto</p>
+                                <p class="text-value"><%= header.qntAberto %></p>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p class="text m-b-sm">Atrasadas</p>
+                                <p class="text-value"><%= header.qntVencido %></p>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p class="text m-b-sm">Sem Boleto</p>
+                                <p class="text-value"><%= header.qntSemBoleto %></p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            <% } %>
             <hr class="p-b-xs" style="border: none; border-top: 1px solid #E5E5E5; padding-top: 20px;" />
             <table class="table-dataset nowrap">
                 <thead>
@@ -45,16 +47,18 @@
                         <th class="left">Status</th>
                         <th class="left">Cliente</th>
                         <th>Vencimento</th>
+                        <th>Parcelas</th>
                         <th class="right">Valor</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% (items || []).forEach(item => { %>
-                        <tr class="<%- (({atrasado: 'danger', pago: 'weak'})?.[item?.status?.toLowerCase()] || '') %>">
-                            <td class="left uppercase bold"><%= item.status %></td>
-                            <td class="left" style="color: #171717;"><%= item.cliente %></td>
-                            <td class="center"><%= item.vencimento %></td>
-                            <td class="right medium"><%= item.valor %></td>
+                    <% (data.items || []).forEach(item => { %>
+                        <tr class="<%- (({atrasado: 'danger', vencido: 'danger', pago: 'weak'})?.[item?.statusPedido?.toLowerCase()] || '') %>">
+                            <td class="left uppercase bold"><%= item.statusPedido %></td>
+                            <td class="left" style="color: #171717;"><%= item.nomeCliente %></td>
+                            <td class="center"><%= utils.dateFormatBR(item.dataVencto) %></td>
+                            <td class="center"><%= item.parcela?.split(':')?.[1]?.trim() %></td>
+                            <td class="right medium"><%= utils.moneyFormat(item.cre_valor) %></td>
                         </tr>
                     <% }) %>
                 </tbody>
@@ -63,7 +67,8 @@
                         <td class="left">TOTAL</td>
                         <td class="left">—</td>
                         <td class="center">—</td>
-                        <td class="right"><%= total_geral %></td>
+                        <td class="center">—</td>
+                        <td class="right"><%= data.items ? utils.moneyFormat((data.items || []).reduce((s, i) => s + i.cre_valor, 0) || 0) : '—' %></td>
                     </tr>
                 </tfoot>
             </table>

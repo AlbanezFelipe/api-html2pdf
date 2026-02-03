@@ -4,9 +4,8 @@ const os = require('os')
 const { spawn } = require('node:child_process')
 const crypto = require('crypto')
 const ejs = require("ejs")
-const { log, logError } = require('../commons/log')
+const { logVerbose, logError, deep } = require('../commons/log')
 const utils = require('../commons/utils')
-// const { logDev } = require('../commons/log')
 
 // Wkhtmltopdf Path
 const wkhtmltopdfPath = os.platform() === 'win32' ? 'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe' : 'wkhtmltopdf'
@@ -107,6 +106,7 @@ const htmlFileToPdfBuffer = (inputHtmlPath, wkArgs) => {
 exports.build = async (req, res, next) => {
   // Read request body
   const { template: templateBody, data = {}, options = {} } = req.body || {}
+  logVerbose('REQUEST BODY\n', deep(req.body))
 
   // Missing template
   if (!templateBody) return res.status(400).json({ error: 'Missing "template" in body' })
@@ -142,14 +142,14 @@ exports.build = async (req, res, next) => {
     headerHtmlPath,
     footerHtmlPath
   })
+  logVerbose('WKHTMLTOPDF Args\n', wkArgs)
 
   // HTML to PDF
   const pdf = await htmlFileToPdfBuffer(mainHtmlPath, wkArgs)
   
   // Clear temp HTML files
   const toDelete = [mainHtmlPath, headerHtmlPath, footerHtmlPath].filter(Boolean)
-  //await Promise.allSettled(toDelete.map((p) => fs.unlink(p)))
-  console.log(toDelete)
+  await Promise.allSettled(toDelete.map((p) => fs.unlink(p))) // i think it not need await, should be better just .then(_ => _).catch(e => errorLog(e))
 
   // Response as Base64 as text
   if(options.response === 'raw' || options.response === 'base64') {

@@ -18,9 +18,6 @@
         ],
         "summary": "Generate a PDF from HTML",
         "description": "",
-        "produces": [
-          "application/text"
-        ],
         "responses": {
           "200": {
             "description": "PDF generated successfully"
@@ -108,10 +105,10 @@
         }
       }
     },
-    "/rabrune-faturamento": {
+    "/pdf-preview": {
       "get": {
         "tags": [
-          "Preview Tests"
+          "PDF Preview"
         ],
         "description": "",
         "responses": {
@@ -133,6 +130,58 @@
           },
           "403": {
             "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/rabrune-faturamento": {
+      "get": {
+        "tags": [
+          "Preview Tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/header-test": {
+      "get": {
+        "tags": [
+          "Preview Tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/footer-test": {
+      "get": {
+        "tags": [
+          "Preview Tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/promatec-financeiro": {
+      "get": {
+        "tags": [
+          "Preview Tests"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

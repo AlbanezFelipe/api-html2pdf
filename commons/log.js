@@ -1,4 +1,5 @@
 const color = require('./color.js')
+const util = require('util')
 
 const nowPretty = () => 
     color('[', 'cyan', 'bold') +
@@ -24,4 +25,12 @@ const logDev = (...args) => {
     if(process.env.NODE_ENV !== 'production') log(...args)
 }
 
-module.exports = { log, logError, logWarning, logDev }
+const logVerbose = (...args) => {
+    if(process.env.VERBOSE_MODE === '1') log(...args)
+}
+
+const deep = (obj) => {
+    return util.inspect(obj, { depth: 9 })
+}
+
+module.exports = { log, logError, logWarning, logDev, logVerbose, deep }

@@ -7,9 +7,9 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "sh -c 'if [ \"$NODEMON_LEGACY\" = \"1\" ]; then npx nodemon -L app.js; else npx nodemon app.js; fi'",
     "production": "NODE_ENV=production node app.js",
-    "swagger": "node swagger.js",
+    "swagger": "node swagger/generate.js",
     "test": "mocha"
   },
   "dependencies": {

@@ -97,6 +97,20 @@ module.exports = router => {
     // Tests
     // ----------------------------------------------------------------------------------
     if(process.env.NODE_ENV !== 'production') {
+        // ------------------------------------------------------------------------------
+        // PDF Preview
+        // ------------------------------------------------------------------------------
+        router.get('/pdf-preview', /* #swagger.tags = ['PDF Preview'] */ (req, res) => {
+            res.sendFile(require('path').join(__dirname, '/pdf-preview/index.html'));
+        })
+
+        // ------------------------------------------------------------------------------
+        // HMAC validation Test
+        // ------------------------------------------------------------------------------
+        router.get('/hmac', hmac 
+            /* #swagger.tags = ['HMAC Tests'] */, 
+            (req, res, next) => res.send('ok')
+        )
 
         // ------------------------------------------------------------------------------
         // Test Controllers
@@ -120,18 +134,6 @@ module.exports = router => {
 
         router.get('/promatec-financeiro', ejsTest.promatecFinanceiro
             /* #swagger.tags = ['Preview Tests'] */
-        )
-
-        router.get('/pdf-preview', /* #swagger.tags = ['Preview Tests'] */ (req, res) => {
-            res.sendFile(require('path').join(__dirname, '/views/pdf-preview/index.html'));
-        })
-
-        // ------------------------------------------------------------------------------
-        // HMAC validation Test
-        // ------------------------------------------------------------------------------
-        router.get('/hmac', hmac 
-            /* #swagger.tags = ['HMAC Tests'] */, 
-            (req, res, next) => res.send('ok')
         )
     }
 
